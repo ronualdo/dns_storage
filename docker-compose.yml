@@ -8,6 +8,7 @@ services:
       DATABASE_USER: 'postgres'
       DATABASE_PASSWORD: 'postgres'
       DATABASE_HOSTNAME: database
+      RUBYOPT: '-W:no-deprecated -W:no-experimental'
     volumes:
       - .:/app
   database:
