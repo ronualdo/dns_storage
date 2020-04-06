@@ -6,7 +6,7 @@ RSpec.describe Storage do
       params = {
         ip: '192.168.2.2',
         hostnames_attributes: [
-          {'hostname': 'ipsum.com'}
+          {hostname: 'ipsum.com'}
         ]
       }
 
@@ -23,7 +23,7 @@ RSpec.describe Storage do
       params = {
         ip: '192.168.2.2',
         hostnames_attributes: [
-          {'hostname': 'ipsum.com'}
+          {hostname: 'ipsum.com'}
         ]
       }
 
@@ -36,13 +36,31 @@ RSpec.describe Storage do
       params = {
         ip: '192.168.2.2',
         hostnames_attributes: [
-          {'hostname': 'ipsum.com'}
+          {hostname: 'ipsum.com'}
         ]
       }
 
       expect {
         described_class.register_dns_record(params)
       }.to change { Storage::Host.count }.by(1)
+    end
+
+    context 'given that one host already exists' do
+      let(:host) { create(:host) }
+
+      it 'does not persist a new host' do
+        params = {
+          ip: '192.168.2.2',
+          hostnames_attributes: [
+            {hostname: host.name},
+            {hostname: 'alsum.com'}
+          ]
+        }
+
+        expect {
+          described_class.register_dns_record(params)
+        }.to change { Storage::Host.count }.by(1)
+      end
     end
   end
 end

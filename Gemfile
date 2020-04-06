@@ -27,6 +27,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'factory_bot_rails'
 end
 
 group :development, :test do
