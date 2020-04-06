@@ -1,7 +1,7 @@
 FROM ruby:2.7.1-alpine3.11
 
 RUN apk update && \
-  apk add --upgrade postgresql-dev build-base git tzdata && \
+  apk add --upgrade postgresql postgresql-dev build-base git tzdata && \
   rm -rf /var/cache/apk/* && \
   gem install bundler && \
   gem install rails && \ 
