@@ -22,4 +22,22 @@ RSpec.describe "DnsRecords API", type: :request do
     expect(response).to have_http_status(:created)
     expect(JSON.parse(response.body)['id']).not_to be_nil
   end
+
+  it 'returns errors when parameters are invalid' do
+    dns_record_params = <<-PARAMS
+      {
+        "dns_records": {
+          "ip": "300.168.0.12",
+          "hostnames_attributes": [
+            {"hostname": "lorem.com"}
+          ] 
+        }
+      }
+    PARAMS
+
+    post '/dns_records', params: dns_record_params, headers: json_header
+
+    expect(response).to have_http_status(500)
+    expect(JSON.parse(response.body)['error']).to eq({"ip"=>["is invalid"]})
+  end
 end

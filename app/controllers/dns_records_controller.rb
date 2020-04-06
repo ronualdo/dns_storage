@@ -5,7 +5,7 @@ class DnsRecordsController < ApplicationController
     if dns_record.valid?
       render json: dns_record, status: :created
     else
-      render json: { "error" => "error" }, status: :error
+      render json: { "error" => dns_record.errors.messages }, status: 500
     end
   end
 
