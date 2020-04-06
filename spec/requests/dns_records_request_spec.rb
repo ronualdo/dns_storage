@@ -9,9 +9,10 @@ RSpec.describe "DnsRecords API", type: :request do
     dns_record_params = <<-PARAMS
       {
         "dns_records": {
-         "hostnames_attributes": [
-          {"hostname": "lorem.com"}
-         ] 
+          "ip": "192.168.0.12",
+          "hostnames_attributes": [
+            {"hostname": "lorem.com"}
+          ] 
         }
       }
     PARAMS
