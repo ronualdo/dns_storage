@@ -3,14 +3,10 @@ require 'rails_helper'
 RSpec.describe Storage do
   describe '.register_dns_record' do
     it 'retusn a new dns record and its new hostnames' do
-      params = {
-        ip: '192.168.2.2',
-        hostnames_attributes: [
-          {hostname: 'ipsum.com'}
-        ]
-      }
+      ip = '192.168.2.2'
+      hostnames = ['ipsum.com']
 
-      dns_record = described_class.register_dns_record(params)
+      dns_record = described_class.register_dns_record(ip, hostnames)
       
       expect(dns_record.valid?).to be_truthy
       expect(dns_record.id).not_to be_nil
@@ -20,28 +16,20 @@ RSpec.describe Storage do
     end
 
     it 'persists new dns record' do
-      params = {
-        ip: '192.168.2.2',
-        hostnames_attributes: [
-          {hostname: 'ipsum.com'}
-        ]
-      }
+      ip = '192.168.2.2'
+      hostnames = ['ipsum.com']
 
       expect {
-        described_class.register_dns_record(params)
+        described_class.register_dns_record(ip, hostnames)
       }.to change { Storage::DnsRecord.count }.by(1)
     end
 
     it 'persists new host' do
-      params = {
-        ip: '192.168.2.2',
-        hostnames_attributes: [
-          {hostname: 'ipsum.com'}
-        ]
-      }
+      ip = '192.168.2.2'
+      hostnames = ['ipsum.com']
 
       expect {
-        described_class.register_dns_record(params)
+        described_class.register_dns_record(ip, hostnames)
       }.to change { Storage::Host.count }.by(1)
     end
 
@@ -49,16 +37,11 @@ RSpec.describe Storage do
       let(:host) { create(:host) }
 
       it 'does not persist a new host' do
-        params = {
-          ip: '192.168.2.2',
-          hostnames_attributes: [
-            {hostname: host.name},
-            {hostname: 'alsum.com'}
-          ]
-        }
+        ip = '192.168.2.2'
+        hostnames = ['ipsum.com']
 
         expect {
-          described_class.register_dns_record(params)
+          described_class.register_dns_record(ip, hostnames)
         }.to change { Storage::Host.count }.by(1)
       end
     end
