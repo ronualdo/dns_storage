@@ -46,4 +46,26 @@ RSpec.describe Storage do
       end
     end
   end
+
+  describe '.retrieve_dns_records' do
+    context 'given there are dns records registered' do
+      let(:ipsom) { create(:host, name: 'ipsom.com') }
+      let(:lorem) { create(:host, name: 'lorem.com') }
+      let(:dolor) { create(:host, name: 'dolor.com') }
+      let!(:first_record) { create(:dns_record, ip: '1.1.1.1', hosts: [ipsom, lorem]) }
+      let!(:second_record) { create(:dns_record, ip: '2.2.2.2', hosts: [dolor]) }
+
+      it 'it returns all dns records if no filters are provided' do
+        dns_records = described_class.retrieve_dns_records(page: 1)
+
+        expect(dns_records).to match([first_record, second_record])
+      end
+
+      it 'paginates results' do
+        dns_records = described_class.retrieve_dns_records(page: 2)
+
+        expect(dns_records).to be_empty
+      end
+    end
+  end
 end
