@@ -3,7 +3,8 @@ class DnsRecordsController < ApplicationController
     dns_record = Storage.register_dns_record(ip, hostnames)
 
     if dns_record.valid?
-      render json: DnsRecordPresenter.present_single_created_record(dns_record), status: :created
+      render json: DnsRecordPresenter.present_single_created_record(dns_record),
+             status: :created
     else
       render json: { "error" => dns_record.errors.messages }, status: 500
     end
