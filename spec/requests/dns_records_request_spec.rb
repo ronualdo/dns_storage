@@ -20,17 +20,17 @@ RSpec.describe "DnsRecords API", type: :request do
     post '/dns_records', params: dns_record_params, headers: json_header
 
     expect(response).to have_http_status(:created)
-    json_response = JSON.parse(response.body)
     expect(json_response['id']).not_to be_nil
 
-    get '/dns_records'
+    get '/dns_records?page=1'
 
     expect(response).to have_http_status(:ok)
-    json_response = JSON.parse(response.body)
     expect(json_response['total_records']).to eq(1)
     expect(json_response['records']).not_to be_nil
-    # expect(json_response['records']['id']).not_to be_nil
-    # expect(json_response['records']['ip_address']).to eq('192.168.0.12') expect(json_response['related_hostnames']).not_to be_nil
+    records = json_response['records']
+    expect(records.size).to eq(1)
+    expect(records.first['id']).not_to be_nil
+    expect(records.first['ip_address']).to eq('192.168.0.12')
     expect(json_response['related_hostnames']).to match([{'hostname' => 'lorem.com', 'count' => 1}])
   end
 
@@ -49,7 +49,10 @@ RSpec.describe "DnsRecords API", type: :request do
     post '/dns_records', params: dns_record_params, headers: json_header
 
     expect(response).to have_http_status(500)
-    json_response = JSON.parse(response.body)
     expect(json_response['error']).to eq({"ip"=>["is invalid"]})
+  end
+
+  def json_response
+    JSON.parse(response.body)
   end
 end

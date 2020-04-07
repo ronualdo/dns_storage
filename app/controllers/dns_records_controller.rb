@@ -10,13 +10,17 @@ class DnsRecordsController < ApplicationController
   end
 
   def index
-    dns_records = Storage.retrieve_dns_records(
-      page: page,
-      included_hostnames: included_hostnames,
-      excluded_hostnames: excluded_hostnames
-    )
+    if page
+      dns_records = Storage.retrieve_dns_records(
+        page: page,
+        included_hostnames: included_hostnames,
+        excluded_hostnames: excluded_hostnames
+      )
 
-    render json: DnsRecordPresenter.present_multiple_records(dns_records), status: :ok
+      render json: DnsRecordPresenter.present_multiple_records(dns_records), status: :ok
+    else
+      render json: { "error" => "page parameter is mandatory" }, status: 500
+    end
   end
 
   private
@@ -37,7 +41,7 @@ class DnsRecordsController < ApplicationController
   end
 
   def page
-    params[:page]
+    params[:page]&.to_i
   end
 
   def included_hostnames
