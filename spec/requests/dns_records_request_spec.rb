@@ -22,7 +22,7 @@ RSpec.describe "DnsRecords API", type: :request do
     expect(response).to have_http_status(:created)
     expect(json_response['id']).not_to be_nil
 
-    get '/dns_records?page=1'
+    get '/dns_records?page=1&included=lorem.com&excluded=ipsum.com'
 
     expect(response).to have_http_status(:ok)
     expect(json_response['total_records']).to eq(1)

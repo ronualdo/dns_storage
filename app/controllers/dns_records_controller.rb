@@ -46,10 +46,10 @@ class DnsRecordsController < ApplicationController
   end
 
   def included_hostnames
-    params[:included_hostnames]
+    params[:included]&.split(',')
   end
 
   def excluded_hostnames
-    params[:excluded_hostnames]
+    params[:excluded]&.split(',')
   end
 end
