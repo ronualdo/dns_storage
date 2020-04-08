@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "DnsRecords API", type: :request do
+RSpec.describe "DnsRecords API Acceptance Test", type: :request do
   let(:json_header) do
     { 'CONTENT_TYPE' => 'application/json' }
   end
